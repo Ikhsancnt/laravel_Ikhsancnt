@@ -19,6 +19,8 @@
             <td>{{ $patient->id_hospital }}</td>
             <td>
                 <button class="btn btn-danger btn-sm btn-delete" data-id="{{ $patient->id }}">Hapus</button>
+                <a class="btn btn-primary btn-sm" href="{{ route('patients.edit', $patient->id) }}">Edit</a>
+                <a class="btn btn-info btn-sm" href="{{ route('patients.show', $patient->id) }}">Lihat</a>
             </td>
         </tr>
         @empty

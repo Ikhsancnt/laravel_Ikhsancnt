@@ -18,6 +18,7 @@
                                 <option value="{{ $rs->id }}">{{ $rs->hospital }}</option>
                             @endforeach
                         </select>
+                        <a href="{{ route('patients.create') }}" class="btn btn-primary ms-auto">Tambah Data</a>
                     </div>
 
                     <div id="table-patient-container">

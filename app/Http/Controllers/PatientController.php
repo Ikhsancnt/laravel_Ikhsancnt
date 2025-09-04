@@ -23,7 +23,8 @@ class PatientController extends Controller
      */
     public function create()
     {
-        //
+        $hospital = Hospital::all();
+        return view('patients.create', compact('hospital'));
     }
 
     /**
@@ -31,7 +32,17 @@ class PatientController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'patient' => 'required|string|max:255',
+            'address' => 'required|string|max:500',
+            'number_phone' => 'required|string|max:20',
+            'id_hospital' => 'required|exists:hospitals,id',
+        ]);
+
+        Patient::create($request->all());
+
+        return redirect()->route('patients.index')
+                         ->with('success', 'Patient data created successfully.');
     }
 
     /**
@@ -39,7 +50,8 @@ class PatientController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $patient = Patient::with('hospital')->findOrFail($id);
+        return view('patients.show', compact('patient'));
     }
 
     /**
@@ -47,7 +59,9 @@ class PatientController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $patient = Patient::findOrFail($id);
+        $hospital = Hospital::all();
+        return view('patients.edit', compact('patient', 'hospital'));
     }
 
     /**
@@ -55,7 +69,18 @@ class PatientController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'patient' => 'required|string|max:255',
+            'address' => 'required|string|max:500',
+            'number_phone' => 'required|string|max:20',
+            'id_hospital' => 'required|exists:hospitals,id',
+        ]);
+
+        $patient = Patient::findOrFail($id);
+        $patient->update($request->all());
+
+        return redirect()->route('patients.index')
+                         ->with('success', 'Patient data updated successfully.');
     }
 
     /**
