@@ -13,7 +13,7 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>No</th>
+                                <th>ID</th>
                                 <th>Nama Rumah Sakit</th>
                                 <th>Alamat</th>
                                 <th>Email</th>
@@ -30,11 +30,9 @@
                                 <td>{{ $rs->email }}</td>
                                 <td>{{ $rs->telephone }}</td>
                                 <td>
-                                    <form action="{{ route('hospitals.destroy', $rs->id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
-                                    </form>
+                                    <a class="btn btn-info btn-sm" href="{{ route('hospitals.show', $rs->id) }}">Detail</a>
+                                    <a class="btn btn-warning btn-sm" href="{{ route('hospitals.edit', $rs->id) }}">Edit</a>
+                                    <button class="btn btn-danger btn-sm btn-delete-rs" data-id="{{ $rs->id }}">Hapus</button>
                                 </td>
                             </tr>
                             @endforeach
@@ -44,4 +42,40 @@
             </div>
         </div>
     </div>
+
+    @push('scripts')
+    <script>
+        $(document).ready(function() {
+            $(document).on('click', '.btn-delete-rs', function(e) {
+                e.preventDefault();
+                let id = $(this).data('id');
+                let url = "{{ url('hospitals') }}/" + id;
+
+                if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: {
+                            '_token': '{{ csrf_token() }}',
+                            '_method': 'DELETE'
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                alert(response.success); // ambil dari JSON success
+                                location.reload();
+                            }
+                        },
+                        error: function(xhr) {
+                            if (xhr.responseJSON && xhr.responseJSON.error) {
+                                alert(xhr.responseJSON.error); // ambil dari JSON error
+                            } else {
+                                alert('Terjadi kesalahan saat menghapus data.');
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+    @endpush
 </x-app-layout>

@@ -47,7 +47,8 @@ class HospitalController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $hospital = Hospital::find($id);
+        return view('hospitals.show', compact('hospital'));
     }
 
     /**
@@ -55,15 +56,26 @@ class HospitalController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $hospital = Hospital::find($id);
+        return view('hospitals.edit', compact('hospital'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Hospital $hospital)
     {
-        //
+        $request->validate([
+            'hospital' => 'required|string|max:255',
+            'address' => 'required|string|max:500',
+            'email' => 'required|email|max:255|unique:hospitals,email,' . $hospital->id,
+            'telephone' => 'required|string|max:20',
+        ]);
+
+        $hospital->update($request->all());
+
+        return redirect()->route('hospitals.index')
+                         ->with('success', 'Hospital data updated successfully.');
     }
 
     /**
@@ -71,8 +83,16 @@ class HospitalController extends Controller
      */
     public function destroy(Hospital $hospital)
     {
+        if ($hospital->patient()->count() > 0) {
+            return response()->json([
+                'error' => 'Data cannot be deleted because it is still connected to patient data..'
+            ], 422);
+        }
+
         $hospital->delete();
-        return redirect()->route('hospitals.index')
-                         ->with('success', 'Hospital data deleted successfully.');
+
+        return response()->json([
+            'success' => 'Delete data successfully.'
+        ]);
     }
 }

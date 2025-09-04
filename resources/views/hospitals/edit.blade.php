@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Tambah Rumah Sakit Baru') }}
+            {{ __('Edit Data Rumah Sakit') }}
         </h2>
     </x-slot>
 
@@ -21,26 +21,27 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('hospitals.store') }}" method="POST">
+                    <form action="{{ route('hospitals.update', $hospital->id) }}" method="POST">
                         @csrf
+                        @method('PUT')
                         <div class="form-group mb-3">
                             <strong>Nama Rumah Sakit:</strong>
-                            <input type="text" name="hospital" class="form-control" placeholder="Nama Rumah Sakit" value="{{ old('hospital') }}">
+                            <input type="text" name="hospital" class="form-control" value="{{ $hospital->hospital }}">
                         </div>
                         <div class="form-group mb-3">
                             <strong>Alamat:</strong>
-                            <textarea class="form-control" style="height:100px" name="address" placeholder="Alamat">{{ old('address') }}</textarea>
+                            <textarea class="form-control" style="height:100px" name="address">{{ $hospital->address }}</textarea>
                         </div>
                         <div class="form-group mb-3">
                             <strong>Email:</strong>
-                            <input type="email" name="email" class="form-control" placeholder="Email" value="{{ old('email') }}">
+                            <input type="email" name="email" class="form-control" value="{{ $hospital->email }}">
                         </div>
                         <div class="form-group mb-3">
                             <strong>Telepon:</strong>
-                            <input type="text" name="telephone" class="form-control" placeholder="Telepon" value="{{ old('telephone') }}">
+                            <input type="text" name="telephone" class="form-control" value="{{ $hospital->telephone }}">
                         </div>
                         <div class="text-center">
-                            <button type="submit" class="btn btn-primary">Simpan</button>
+                            <button type="submit" class="btn btn-primary">Update</button>
                             <a class="btn btn-secondary" href="{{ route('hospitals.index') }}">Kembali</a>
                         </div>
                     </form>
