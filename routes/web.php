@@ -30,6 +30,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::resource('hospitals', HospitalController::class);
+    Route::get('patients/filter', [PatientController::class, 'filter'])->name('patients.filter');
+    Route::resource('patients', PatientController::class);
 });
 
 require __DIR__.'/auth.php';

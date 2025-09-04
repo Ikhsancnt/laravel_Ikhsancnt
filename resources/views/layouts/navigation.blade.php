@@ -19,6 +19,10 @@
                     <x-nav-link :href="route('hospitals.index')" :active="request()->routeIs('hospitals.*')">
                         {{ __('Data Rumah Sakit') }}
                     </x-nav-link>
+
+                    <x-nav-link :href="route('patients.index')" :active="request()->routeIs('patients.*')">
+                        {{ __('Data Pasien') }}
+                    </x-nav-link>
                 </div>
             </div>
 

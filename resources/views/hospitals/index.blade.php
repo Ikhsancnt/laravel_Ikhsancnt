@@ -13,6 +13,7 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
+                                <th>No</th>
                                 <th>Nama Rumah Sakit</th>
                                 <th>Alamat</th>
                                 <th>Email</th>
@@ -23,6 +24,7 @@
                         <tbody>
                             @foreach ($hospital as $rs)
                             <tr>
+                                <td>{{ $rs->id }}</td>
                                 <td>{{ $rs->hospital }}</td>
                                 <td>{{ $rs->address }}</td>
                                 <td>{{ $rs->email }}</td>
